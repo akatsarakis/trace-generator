@@ -17,8 +17,8 @@ fi
 
 # declare parameters to produce traces
 declare -a serverNo=(9)                  #("2" "4" "8" "16" "32" "64" "128")
-declare -a writeRatio=(0.00 0.01 0.05)       #("0.00" "0.01" "0.05" "0.10" "0.15" "0.50" )
-declare -a zipfExp=(0.99)                 #("0.60" "0.70" "0.90" "0.99" "1.01" )
+declare -a writeRatio=(0.00)       #("0.00" "0.01" "0.05" "0.10" "0.15" "0.50" )
+declare -a zipfExp=(0)                 #("0.60" "0.70" "0.90" "0.99" "1.01" )
 declare -a workloadSize=(10000000)        #("25000000" "50000000")
 declare -a reqIntervalPerServer=(10)      #("10" "100")
 declare -a numberOfKeys=(250000000)       #("125000000" "250000000")

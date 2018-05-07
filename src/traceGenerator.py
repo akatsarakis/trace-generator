@@ -2,6 +2,11 @@
 
 import sys, getopt, random
 import numpy as np
+#from __future__ import print_function
+#import sys
+
+#def eprint(*args, **kwargs):
+#    print(*args, file=sys.stderr, **kwargs)
 
 class TraceGenerator:
     def __init__(self, expA, keyNo, cacheSize, serverNo, writeRate, requestNo ,poissonInterval):
@@ -47,13 +52,13 @@ class TraceGenerator:
         sum = 0
         for i in range(1, self.keyNo + 1):
             #Start section <changed recently>
-            if self.expA == 0:
-                keyPopularity = 1 / self.keyNo
+            if self.expA == 0: #this is for uniform
+                keyPopularity = 1 / float(self.keyNo)
             else:
                 keyPopularity = 1 / pow(i, self.expA)
             #End section <changed recently>
             sum = sum + keyPopularity
-            if i == self.cacheSize:
+            if i == self.cacheSize or (self.cacheSize > self.keyNo and i == self.keyNo):
                 cacheHit = sum
             if i <= self.cacheSize:
                 randomServer = random.randint(0, self.serverNo-1)
@@ -67,8 +72,9 @@ class TraceGenerator:
             self.hotKeyPopularity[i] = self.hotKeyPopularity[i] / cacheHit
         for i in range(0, self.serverNo):
             self.serverHPopularity[i] = self.serverHPopularity[i] / cacheHit
-            self.serverNPopularity[i] = self.serverNPopularity[i] / (sum - cacheHit)
-        self.hotRate = cacheHit/sum
+            if sum > cacheHit:
+                self.serverNPopularity[i] = self.serverNPopularity[i] / (sum - cacheHit)
+        self.hotRate = cacheHit / sum
      
     def getARandomNormalKey(self):
         return random.randint(self.cacheSize+1, self.keyNo)
